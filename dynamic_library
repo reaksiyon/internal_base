@@ -1,0 +1,50 @@
+// dllmain.cpp : Defines the entry point for the DLL application.
+#include "pch.h"
+#include <cstdio>
+#include <iostream>
+
+void startcheat()
+{
+	
+	AllocConsole();						//attaches console	
+	freopen("CONOUT$", "w", stdout);	//sets cout to be used with our newly created console
+	std::cout << "We Can Use Console For Debugging!\n";
+
+	DWORD* localPlayer = (DWORD*)0x509B74;	//creates a pointer that stores the address of pointer to local player
+	int* health = (int*)(*localPlayer + 0xF8);	//creates a pointer to health
+
+	std::cout << *health;	//prints our health value
+
+}
+
+
+
+BOOL APIENTRY DllMain( HMODULE hModule,
+                       DWORD  ul_reason_for_call,
+                       LPVOID lpReserved
+                     )
+
+
+{
+
+
+    switch (ul_reason_for_call)
+    {
+		
+
+    case DLL_PROCESS_ATTACH:
+		CreateThread(0,0,(LPTHREAD_START_ROUTINE)startcheat,0,0,0);
+		break;
+    case DLL_THREAD_ATTACH:
+    case DLL_THREAD_DETACH:
+    case DLL_PROCESS_DETACH:
+        break;
+    }
+    return TRUE;
+
+
+	
+
+
+}
+
